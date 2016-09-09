@@ -67,20 +67,6 @@
 						<% for (var i in theme.menu){ %>
 							<li><a href="<%- url_for(theme.menu[i]) %>"><%= i %></a></li>
 				        <%}%>
-				        	<li class="closeBg"><a onclick=closeBg()>开启阅读模式</a></li>
-				        	<li class="openBg" style="display:none"><a onclick=openBg()>关闭阅读模式</a></li>
-				        	<script>
-				        		function closeBg(){
-				        			$('body').css("background-image","none");
-				        			$('.closeBg').css("display","none");
-				        			$('.openBg').css("display","block");
-				        		}
-				        		function openBg(){
-				  					$('body').css("background-image","url(http://7xkj1z.com1.z0.glb.clouddn.com/bg1.jpg)");
-				  					$('.openBg').css("display","none");
-				        			$('.closeBg').css("display","block");	
-				        		}
-				        	</script>
 						</ul>
 					</nav>
 					<nav class="header-nav">
