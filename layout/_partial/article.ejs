@@ -36,13 +36,13 @@
       <% } %>
       <%- partial('post/tag') %>
       <%- partial('post/category') %>
+      <div class="clearfix"></div>
+    </div>
       <% if (post.excerpt && index){ %>
         <p class="article-more-link">
           <a <% if (!theme.excerpt_link){ %>class="hidden"<% } %> href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
         </p>
       <% } %>
-      <div class="clearfix"></div>
-    </div>
     <% } %>
   </div>
   <% if (!index){ %>
