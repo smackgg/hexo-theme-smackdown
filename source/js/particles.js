@@ -6,6 +6,26 @@
 /* How to use? : Check the GitHub README
 /* v2.0.0
 /* ----------------------------------------------- */
+var browser = {
+  versions: function() {
+    var u = window.navigator.userAgent;
+    return {
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1 //是否为微信浏览器
+    };
+  }()
+}
+var mobile = (browser.versions.mobile === true);
+
 
 var pJS = function(tag_id, params){
 
@@ -1073,88 +1093,169 @@ var pJS = function(tag_id, params){
     if(pJS.interactivity.events.onhover.enable || pJS.interactivity.events.onclick.enable){
 
       /* el on mousemove */
-      document.body.addEventListener('mousemove', function(e){
 
-        // if(pJS.interactivity.el == window){
-          var pos_x = e.clientX,
-              pos_y = e.clientY;
-        // }
-        // else{
-        //   var pos_x = e.offsetX || e.clientX,
-        //       pos_y = e.offsetY || e.clientY;
-        // }
+      if (mobile) {
+        var touchstartX, touchstartY;
+        window.addEventListener('touchstart', function(e){
+          console.log(e.targetTouches[0].clientX);
+          touchstartX = e.targetTouches[0].clientX,
+          touchstartY = e.targetTouches[0].clientY;
+        });
+        window.addEventListener('touchmove', function(e){
 
-        pJS.interactivity.mouse.pos_x = pos_x;
-        pJS.interactivity.mouse.pos_y = pos_y;
+          // if(pJS.interactivity.el == window){
+            var pos_x = e.targetTouches[0].clientX,
+                pos_y = e.targetTouches[0].clientY;
+          // }
+          // else{
+          //   var pos_x = e.offsetX || e.clientX,
+          //       pos_y = e.offsetY || e.clientY;
+          // }
 
-        if(pJS.tmp.retina){
-          pJS.interactivity.mouse.pos_x *= pJS.canvas.pxratio;
-          pJS.interactivity.mouse.pos_y *= pJS.canvas.pxratio;
-        }
+          pJS.interactivity.mouse.pos_x = pos_x;
+          pJS.interactivity.mouse.pos_y = pos_y;
 
-        pJS.interactivity.status = 'mousemove';
+          if(pJS.tmp.retina){
+            pJS.interactivity.mouse.pos_x *= pJS.canvas.pxratio;
+            pJS.interactivity.mouse.pos_y *= pJS.canvas.pxratio;
+          }
 
-      });
+          pJS.interactivity.status = 'mousemove';
 
-      /* el on onmouseleave */
-      window.addEventListener('mouseleave', function(e){
+        });
+        window.addEventListener('touchend', function(e){
+          if (!pJS.interactivity.mouse.pos_x && !pJS.interactivity.mouse.pos_y) {
+            pJS.interactivity.mouse.click_pos_x = touchstartX;
+            pJS.interactivity.mouse.click_pos_y = touchstartY;
+            pJS.interactivity.mouse.pos_x = touchstartX;
+            pJS.interactivity.mouse.pos_y = touchstartY;
+            pJS.interactivity.mouse.click_time = new Date().getTime();
 
-        pJS.interactivity.mouse.pos_x = null;
-        pJS.interactivity.mouse.pos_y = null;
-        pJS.interactivity.status = 'mouseleave';
+            if(pJS.interactivity.events.onclick.enable){
+              console.log(pJS.interactivity.mouse);
+              switch(pJS.interactivity.events.onclick.mode){
 
-      });
+                case 'push':
+                  if(pJS.particles.move.enable){
+                    pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+                  }else{
+                    if(pJS.interactivity.modes.push.particles_nb == 1){
+                      pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+                    }
+                    else if(pJS.interactivity.modes.push.particles_nb > 1){
+                      pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb);
+                    }
+                  }
+                break;
 
+                case 'remove':
+                  pJS.fn.modes.removeParticles(pJS.interactivity.modes.remove.particles_nb);
+                break;
+
+                case 'bubble':
+                  pJS.tmp.bubble_clicking = true;
+                break;
+
+                case 'repulse':
+                  pJS.tmp.repulse_clicking = true;
+                  pJS.tmp.repulse_count = 0;
+                  pJS.tmp.repulse_finish = false;
+                  setTimeout(function(){
+                    pJS.tmp.repulse_clicking = false;
+                  }, pJS.interactivity.modes.repulse.duration*1000)
+                break;
+
+              }
+
+            }
+          }
+          pJS.interactivity.mouse.pos_x = null;
+          pJS.interactivity.mouse.pos_y = null;
+          pJS.interactivity.status = 'mouseleave';
+
+        });
+      } else {
+        window.addEventListener('mousemove', function(e){
+
+          // if(pJS.interactivity.el == window){
+            var pos_x = e.clientX,
+                pos_y = e.clientY;
+          // }
+          // else{
+          //   var pos_x = e.offsetX || e.clientX,
+          //       pos_y = e.offsetY || e.clientY;
+          // }
+
+          pJS.interactivity.mouse.pos_x = pos_x;
+          pJS.interactivity.mouse.pos_y = pos_y;
+
+          if(pJS.tmp.retina){
+            pJS.interactivity.mouse.pos_x *= pJS.canvas.pxratio;
+            pJS.interactivity.mouse.pos_y *= pJS.canvas.pxratio;
+          }
+
+          pJS.interactivity.status = 'mousemove';
+
+        });
+        window.addEventListener('mouseleave', function(e){
+
+          pJS.interactivity.mouse.pos_x = null;
+          pJS.interactivity.mouse.pos_y = null;
+          pJS.interactivity.status = 'mouseleave';
+
+        });
+      }
     }
 
     /* on click event */
     if(pJS.interactivity.events.onclick.enable){
+      if (!mobile) {
+        window.addEventListener('click', function(){
 
-      window.addEventListener('click', function(){
+          pJS.interactivity.mouse.click_pos_x = pJS.interactivity.mouse.pos_x;
+          pJS.interactivity.mouse.click_pos_y = pJS.interactivity.mouse.pos_y;
+          pJS.interactivity.mouse.click_time = new Date().getTime();
 
-        pJS.interactivity.mouse.click_pos_x = pJS.interactivity.mouse.pos_x;
-        pJS.interactivity.mouse.click_pos_y = pJS.interactivity.mouse.pos_y;
-        pJS.interactivity.mouse.click_time = new Date().getTime();
+          if(pJS.interactivity.events.onclick.enable){
 
-        if(pJS.interactivity.events.onclick.enable){
+            switch(pJS.interactivity.events.onclick.mode){
 
-          switch(pJS.interactivity.events.onclick.mode){
-
-            case 'push':
-              if(pJS.particles.move.enable){
-                pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
-              }else{
-                if(pJS.interactivity.modes.push.particles_nb == 1){
+              case 'push':
+                if(pJS.particles.move.enable){
                   pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+                }else{
+                  if(pJS.interactivity.modes.push.particles_nb == 1){
+                    pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb, pJS.interactivity.mouse);
+                  }
+                  else if(pJS.interactivity.modes.push.particles_nb > 1){
+                    pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb);
+                  }
                 }
-                else if(pJS.interactivity.modes.push.particles_nb > 1){
-                  pJS.fn.modes.pushParticles(pJS.interactivity.modes.push.particles_nb);
-                }
-              }
-            break;
+              break;
 
-            case 'remove':
-              pJS.fn.modes.removeParticles(pJS.interactivity.modes.remove.particles_nb);
-            break;
+              case 'remove':
+                pJS.fn.modes.removeParticles(pJS.interactivity.modes.remove.particles_nb);
+              break;
 
-            case 'bubble':
-              pJS.tmp.bubble_clicking = true;
-            break;
+              case 'bubble':
+                pJS.tmp.bubble_clicking = true;
+              break;
 
-            case 'repulse':
-              pJS.tmp.repulse_clicking = true;
-              pJS.tmp.repulse_count = 0;
-              pJS.tmp.repulse_finish = false;
-              setTimeout(function(){
-                pJS.tmp.repulse_clicking = false;
-              }, pJS.interactivity.modes.repulse.duration*1000)
-            break;
+              case 'repulse':
+                pJS.tmp.repulse_clicking = true;
+                pJS.tmp.repulse_count = 0;
+                pJS.tmp.repulse_finish = false;
+                setTimeout(function(){
+                  pJS.tmp.repulse_clicking = false;
+                }, pJS.interactivity.modes.repulse.duration*1000)
+              break;
+
+            }
 
           }
 
-        }
-
-      });
+        });
+      }
         
     }
 
@@ -1475,6 +1576,7 @@ function isInArray(value, array) {
 window.pJSDom = [];
 
 window.particlesJS = function(tag_id, params){
+  mobile = mobile;
 
   //console.log(params);
 
