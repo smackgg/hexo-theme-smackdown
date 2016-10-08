@@ -15,7 +15,7 @@ require([], function (){
 		});
 	}
 
-	require(['/js/particles.min.js'], function(particlesJS) {
+	require(['/js/particles.js'], function(particlesJS) {
 		window.particlesJS('particles-js',
 		  
 		  {
