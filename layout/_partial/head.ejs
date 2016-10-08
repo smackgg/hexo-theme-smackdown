@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <%
   var title = page.title;
-
   if (is_archive()){
     title = 'Archives';
 
@@ -18,8 +17,25 @@
   } else if (is_tag()){
     title = 'Tag: ' + page.tag;
   }
+
+  var pageKeywords = page.keywords;
+  var configKeywords = config.keywords;
+  var keywords;
+  if (pageKeywords && configKeywords) {
+    keywords = pageKeywords + ',' + configKeywords;
+  } else if (pageKeywords) {
+    keywords = pageKeywords;
+  } else if (configKeywords) {
+    keywords = configKeywords;
+  }
   %>
-  <title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
+  <title><% if (keywords) { %><%= keywords %>-<% } %><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
+
+  <!-- keywords -->
+  <% if (keywords) { %>
+    <meta name="keywords" content="<%= keywords %>">
+  <% } %>
+
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
   <% if (theme.rss){ %>
@@ -30,4 +46,5 @@
   <% } %>
   <%- css('css/style') %>
   <%- partial("baidu_tongji") %>
+  <%- partial("google_analytics") %>
 </head>

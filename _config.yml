@@ -33,6 +33,7 @@ open_in_new: false
 
 # Miscellaneous
 baidu_tongji: true
+google_analytics: true
 favicon: /favicon.png
 
 #你的头像url
