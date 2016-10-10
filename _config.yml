@@ -51,6 +51,12 @@ share: true
 #是否开启云标签
 tagcloud: true
 
+#是否开启文章阅读量
+leancloud_visitors:
+  enable: false
+  # app_id: your app_id
+  # app_key: your app_key
+
 
 #是否开启友情链接
 #不开启——
