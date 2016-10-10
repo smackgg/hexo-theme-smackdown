@@ -16,6 +16,9 @@
       <div class="article-info article-info-post">
         <%- partial('post/tag') %>
         <%- partial('post/category') %>
+        <% if (theme.leancloud_visitors.enable) { %>
+          <%- partial('post/viewCounter') %>
+        <% } %>
         <div class="clearfix"></div>
       </div>
       <% } %>
@@ -36,6 +39,9 @@
       <% } %>
       <%- partial('post/tag') %>
       <%- partial('post/category') %>
+      <% if (theme.leancloud_visitors.enable) { %>
+        <%- partial('post/viewCounter') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
       <% if (post.excerpt && index){ %>

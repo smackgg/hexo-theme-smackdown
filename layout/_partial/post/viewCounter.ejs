@@ -1,0 +1,9 @@
+<% if (theme.leancloud_visitors.enable) { %>
+<div class="counter-tag counter">
+    <span id="<%- url_for(post.path) %>" class="leancloud_visitors post-title-link"
+          style="font-size: 12px" data-flag-title="<%= post.title %>">
+         &nbsp;
+        <%= __('view') %>
+    </span>
+</div>
+<% } %>

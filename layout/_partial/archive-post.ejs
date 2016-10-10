@@ -8,6 +8,9 @@
         <div class="article-info info-on-left">
           <%- partial('post/tag') %>
           <%- partial('post/category') %>
+          <% if (theme.leancloud_visitors.enable) { %>
+            <%- partial('post/viewCounter') %>
+          <% } %>
         </div>
         <div class="clearfix"></div>
     </header>
