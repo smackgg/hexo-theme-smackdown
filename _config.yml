@@ -36,7 +36,7 @@ open_in_new: false
 # baidu_tongji: true
 # google_analytics: true
 
-favicon: /favicon.png
+favicon: http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg
 
 #你的头像url
 avatar: http://7xkj1z.com1.z0.glb.clouddn.com/head.jpg
@@ -54,8 +54,8 @@ tagcloud: true
 #是否开启文章阅读量
 leancloud_visitors:
   enable: false
-  # app_id: your app_id
-  # app_key: your app_key
+  app_id: your_app_id
+  app_key: your_app_key
 
 
 #是否开启友情链接
@@ -65,10 +65,10 @@ leancloud_visitors:
 friends:
   smackdown: https://github.com/winnerweb/hexo-theme-smackdown
 #是否开启“关于我”。
-#不开启——
+# 不开启——
 aboutme: false
 #开启——
-# aboutme: 
+# aboutme:
 
 swift_search:
   enable: true
