@@ -1,8 +1,12 @@
-关于
+[English document](https://github.com/winnerweb/hexo-theme-smackdown/blob/master/READMEen.md)
 ---
+关于
+===
 这是很早之前写的一个比较浮夸的hexo主题，虽然说有一点脱离了简约。。。有时间写一个简约点的主题。
 
-**喜欢的这个主题话点个star**，有什么问题提issue，看到了一定争取解决。
+**喜欢的这个主题话点个star。**
+
+有什么问题提issue，看到了一定争取解决。
 
 ___
 
@@ -51,7 +55,7 @@ git pull
 ---
 主题配置文件在主目录下的_config.yml，请根据自己需要修改使用。 完整配置例子，可以参考[我的博客备份](https://github.com/winnerweb/myHexo)
 
-```md
+```
 # Header
 menu:
   主页: /
@@ -150,5 +154,5 @@ swift_search:
 ---
 
 Update: 2016-10-31
-- 更新https加载js问题。
-- 更新readme。
+- 更新https加载js问题
+- 更新readme
