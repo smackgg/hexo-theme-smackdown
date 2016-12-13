@@ -229,4 +229,14 @@ require([], function (){
 		$(".article a[href]").attr("target", "_blank")
 	}
 	
+	var image = document.getElementById('background');
+    image.onload = function() {
+        var engine = new RainyDay({
+            image: this
+        });
+        engine.rain([ [1, 2, 8000] ]);
+        engine.rain([ [3, 3, 0.88], [5, 5, 0.9], [6, 2, 1] ], 100);
+    };
+    image.crossOrigin = 'anonymous';
+    image.src = 'http://7xl432.com1.z0.glb.clouddn.com/page44.jpg';
 });
