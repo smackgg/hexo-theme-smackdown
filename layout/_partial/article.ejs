@@ -57,7 +57,12 @@
 </article>
 
 <% if (!index && theme.share){ %>
-<%- partial('post/share') %>
+<%- partial('post/share', {
+    key: post.slug,
+    title: post.title,
+    image: theme.avatar,
+    url: config.url+url_for(post.path)
+  }) %>
 <% } %>
 
 <% if (!index && theme.duoshuo && post.comments){ %>
