@@ -12,9 +12,9 @@ ___
 
 **2015-07-28 17:28:18**
 
-This theme changed based on [Yilia](https://github.com/litten/hexo-theme-yilia) .This theme site is [smackdown](https://github.com/winnerweb/hexo-theme-smackdown).
+This theme changed based on [Yilia](https://github.com/litten/hexo-theme-yilia) .This theme site is [smackdown](https://github.com/smackgg/hexo-theme-smackdown).
 
-**You can go to [my blog](https://winnerweb.github.io/blog) to see**
+**You can go to [my blog](https://smackgg.github.io/blog) to see**
 
 **You also can scan QR code on your mobile devices**
 
@@ -36,7 +36,7 @@ This theme changed based on [Yilia](https://github.com/litten/hexo-theme-yilia) 
 **Install**
 
 ```
-$ git clone https://github.com/winnerweb/hexo-theme-smackdown themes/smackdown
+$ git clone https://github.com/smackgg/hexo-theme-smackdown themes/smackdown
 ```
 
 **config**
@@ -55,7 +55,7 @@ git pull
 3. Theme config
 ---
 You should change 'config.yml' file under your theme directory.
-You can reference [my blog](https://github.com/winnerweb/myHexo).
+You can reference [my blog](https://github.com/smackgg/myHexo).
 
 ```
 # Header
@@ -123,7 +123,7 @@ leancloud_visitors:
 #friends: false
 # Links open
 friends:
-  smackdown: https://github.com/winnerweb/hexo-theme-smackdown
+  smackdown: https://github.com/smackgg/hexo-theme-smackdown
 # Aboutme close
 aboutme: false
 # Aboutme open

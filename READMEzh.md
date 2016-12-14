@@ -1,4 +1,4 @@
-[English document](https://github.com/winnerweb/hexo-theme-smackdown/blob/master/README.md)
+[English document](https://github.com/smackgg/hexo-theme-smackdown/blob/master/README.md)
 ---
 关于
 ===
@@ -12,9 +12,9 @@ ___
 
 **2015-07-28 17:28:18**
 
-很早就搭出的博客，一直没有时间折腾，大三的时间实在是太紧了。这段时间终于腾出点时间，能让我好好的收拾一下自己的博客。将主题优化了一下，本主题基于 [Yilia](https://github.com/litten/hexo-theme-yilia) 主题更改。主题地址[smackdown](https://github.com/winnerweb/hexo-theme-smackdown)。
+很早就搭出的博客，一直没有时间折腾，大三的时间实在是太紧了。这段时间终于腾出点时间，能让我好好的收拾一下自己的博客。将主题优化了一下，本主题基于 [Yilia](https://github.com/litten/hexo-theme-yilia) 主题更改。主题地址[smackdown](https://github.com/smackgg/hexo-theme-smackdown)。
 
-**可以点击进入[我的个人博客](https://winnerweb.github.io/blog)查看效果**
+**可以点击进入[我的个人博客](https://smackgg.github.io/blog)查看效果**
 
 **体验手机版的可以扫下面的二维码。**
 
@@ -35,7 +35,7 @@ ___
 **安装**
 
 ```
-$ git clone https://github.com/winnerweb/hexo-theme-smackdown themes/smackdown
+$ git clone https://github.com/smackgg/hexo-theme-smackdown themes/smackdown
 ```
 
 **配置**
@@ -53,7 +53,7 @@ git pull
 
 三、配置
 ---
-主题配置文件在主目录下的_config.yml，请根据自己需要修改使用。 完整配置例子，可以参考[我的博客备份](https://github.com/winnerweb/myHexo)
+主题配置文件在主目录下的_config.yml，请根据自己需要修改使用。 完整配置例子，可以参考[我的博客备份](https://github.com/smackgg/myHexo)
 
 ```
 # Header
@@ -121,7 +121,7 @@ leancloud_visitors:
 #friends: false
 #开启——
 friends:
-  smackdown: https://github.com/winnerweb/hexo-theme-smackdown
+  smackdown: https://github.com/smackgg/hexo-theme-smackdown
 #是否开启“关于我”。
 #不开启——
 aboutme: false

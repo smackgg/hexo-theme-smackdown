@@ -63,7 +63,7 @@ leancloud_visitors:
 #friends: false
 #开启——
 friends:
-  smackdown: https://github.com/winnerweb/hexo-theme-smackdown
+  smackdown: https://github.com/smackgg/hexo-theme-smackdown
 #是否开启“关于我”。
 # 不开启——
 aboutme: false
