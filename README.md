@@ -155,3 +155,5 @@ swift_search:
 Update: 2016-10-31
 - Update https issue
 - Update readme
+Update: 2016-12-14
+- Fixed bug about share on https.Use duoshuo share instead jiathis。
