@@ -1,4 +1,4 @@
-查看[中文文档](https://github.com/winnerweb/hexo-theme-smackdown/blob/master/READMEzh.md)
+查看[中文文档](https://github.com/smackgg/hexo-theme-smackdown/blob/master/READMEzh.md)
 ---
 ABOUT
 ===
