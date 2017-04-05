@@ -37,7 +37,7 @@
 		}
 	}
 	.left-col {
-		background: rgba(255,255,255,0.2);
+		// background: rgba(255,255,255,0.2);
 		width: 300px;
 		position: fixed;
 		transition: all .2s ease-in;
@@ -46,11 +46,11 @@
 		left: 10px;
 		bottom: 10px;
 
-		-webkit-box-shadow: 0px 0px 10px 2px #ccc inset;
-		-moz-box-shadow: 0px 0px 10px 2px #ccc inset;
-		-ms-box-shadow: 0px 0px 10px 2px #ccc inset;
-		-o-box-shadow: 0px 0px 10px 2px #ccc inset;
-		box-shadow: 0px 0px 10px 2px #ccc inset;
+		-webkit-box-shadow: 0px 0px 30px #000;
+		-moz-box-shadow: 0px 0px 30px #000;
+		-ms-box-shadow: 0px 0px 30px #000;
+		-o-box-shadow: 0px 0px 30px #000;
+		box-shadow: 0px 0px 30px #000;
 		-webkit-border-radius: 20px;
 		-moz-border-radius: 20px;
 		-ms-border-radius: 20px;
@@ -73,7 +73,7 @@
 	}
 
 	@media screen and (max-width:1040px) {
-		
+
 	}@media screen and (max-width:800px) {
 		@import "_partial/mobile"
 	}
@@ -88,7 +88,7 @@
 #header{
 	width:100%;
 	a {
-		color: #000;
+		color: #FFF;
 		&:hover {
 			color: #B0A0AA;
 		}
@@ -96,14 +96,16 @@
 	.profilepic{
 		text-align: center;
 		display: block;
-		border: 2px solid #fff;
-		border-radius: 300px;
+		box-shadow: 0 0 30px 2px #000;
+		border-radius: 50%;
+		padding: 10px;
+		box-sizing: border-box;
 		width: 128px;
 		height: 128px;
 		margin: 0 auto;
 		position: relative;
 		overflow: hidden;
-		-webkit-transition: all 0.2s ease-in;
+		-webkit-transition: all .6s ease-in;
 		display: -webkit-box;
 		-webkit-box-orient: horizontal;
 		-webkit-box-pack: center;
@@ -114,12 +116,18 @@
 			height: 20%;
 			border-radius: 50%;
 			opacity: 0;
-			-webkit-transition: all 0.2s ease-in;
-			&.show{
+			-webkit-transition: all .6s ease-in;
+		}
+		&.show{
+			transform: rotateY(360deg);
+			img {
 				width: 100%;
 				height: 100%;
 				opacity: 1;
 			}
+		}
+		&:hover{
+			transform: rotateY(180deg);
 		}
 	}
 	.header-subtitle{
@@ -153,17 +161,16 @@
 		li{
 			width:100px;
 			margin: 0 auto;
-			margin-top: 4px;
+			margin-top: 10px;
 			padding: 0px 5px;
-			-webkit-box-shadow: 0px 0px 3px 3px #fff;
-			-moz-box-shadow: 0px 0px 3px 3px #fff;
-			-ms-box-shadow: 0px 0px 3px 3px #fff;
-			-o-box-shadow: 0px 0px 3px 3px #fff;
-			box-shadow: 0px 0px 3px 3px #fff;
-			background: rgba(0,0,0,0.4);
+			-webkit-box-shadow: 0px 0px 10px 2px #000;
+			-moz-box-shadow: 0px 0px 10px 2px #000;
+			-ms-box-shadow: 0px 0px 10px 2px #000;
+			-o-box-shadow: 0px 0px 10px 2px #000;
+			box-shadow: 0px 0px 10px 2px #000;
 			border-radius: 10px;
 			cursor: default;
-			a{	
+			a{
 				color: #fff;
 				font-size: 14px;
 				min-width: 300px;
