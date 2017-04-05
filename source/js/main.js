@@ -17,7 +17,7 @@ require([], function (){
 
 	require(['/js/particles.js'], function(particlesJS) {
 		window.particlesJS('particles-js',
-		  
+
 		  {
 		    "particles": {
 		      "number": {
@@ -28,7 +28,7 @@ require([], function (){
 		        }
 		      },
 		      "color": {
-		        "value": "#cccccc"
+		        "value": ['#0fc', '#0ff', '#ccc', '#ffa500', '#7b5d5f', '#ff945c', '#cfb7c4']
 		      },
 		      "shape": {
 		        "type": "circle",
@@ -68,7 +68,7 @@ require([], function (){
 		      "line_linked": {
 		        "enable": true,
 		        "distance": 150,
-		        "color": "#ffffff",
+		        "color": "#ff945c",
 		        "opacity": 0.4,
 		        "width": 1
 		      },
@@ -189,7 +189,7 @@ require([], function (){
 				$(".article-inner .fancy-ctn").fancybox();
 			}
 		});
-		
+
 	}
 	//是否开启动画
 	if(yiliaConfig.animate === true){
@@ -198,10 +198,10 @@ require([], function (){
 			//avatar
 			$(".js-avatar").attr("src", $(".js-avatar").attr("lazy-src"));
 			$(".js-avatar")[0].onload = function(){
-				$(".js-avatar").addClass("show");
+				$(".profilepic").addClass("show");
 			}
 		});
-		
+
 		if(yiliaConfig.isHome === true){
 			//content
 			function showArticle(){
@@ -221,12 +221,12 @@ require([], function (){
 			});
 			showArticle();
 		}
-		
+
 	}
-	
+
 	//是否新窗口打开链接
 	if(yiliaConfig.open_in_new == true){
 		$(".article a[href]").attr("target", "_blank")
 	}
-	
+
 });
