@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>JavaScript DOM编程优化 | Smackdown&#39;s blog</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="description" content="第三章 DOM Scripting DOM  编程　　回去看了一下前面两章的内容，发现写的内容都很多，但是过于繁琐，基本与原文解释的内容差不多，在后面的文章中，我将更多的写自己的理解，而不是更多的原文内容，如果对优化很感兴趣，可以详细的看一下《高性能JavaScript》这本书。在每章结束时，依旧有总结。"><meta name="keywords" content="高性能JavaScript学习笔记"><meta property="og:type" content="article"><meta property="og:title" content="JavaScript DOM编程优化"><meta property="og:url" content="http://blog.smackdown.gebilaowu.cn/2015/08/01/高性能JavaScript3/index.html"><meta property="og:site_name" content="Smackdown's blog"><meta property="og:description" content="第三章 DOM Scripting DOM  编程　　回去看了一下前面两章的内容，发现写的内容都很多，但是过于繁琐，基本与原文解释的内容差不多，在后面的文章中，我将更多的写自己的理解，而不是更多的原文内容，如果对优化很感兴趣，可以详细的看一下《高性能JavaScript》这本书。在每章结束时，依旧有总结。"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img3-1.png"><meta property="og:updated_time" content="2016-10-31T07:25:39.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JavaScript DOM编程优化"><meta name="twitter:description" content="第三章 DOM Scripting DOM  编程　　回去看了一下前面两章的内容，发现写的内容都很多，但是过于繁琐，基本与原文解释的内容差不多，在后面的文章中，我将更多的写自己的理解，而不是更多的原文内容，如果对优化很感兴趣，可以详细的看一下《高性能JavaScript》这本书。在每章结束时，依旧有总结。"><meta name="twitter:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img3-1.png"><link rel="alternative" href="/atom.xml" title="Smackdown&#39;s blog" type="application/atom+xml"><link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/favicon.ico"><link rel="stylesheet" href="/css/style.css"><script>!function(){var t=document.createElement("script"),s=window.location.protocol.split(":")[0];"https"===s?t.src="https://zz.bdstatic.com/linksubmit/push.js":t.src="http://push.zhanzhang.baidu.com/push.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}()</script><script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-85415703-1","auto"),ga("send","pageview")</script><script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script><script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("K1qAIJa0JgKeGUnrlq0G526F-gzGzoHsz","n4XwRe0iBOxWpBaYJ7HNWPA3")</script><script src="/js/Counter.js"></script></head><body><div id="container"><div id="particles-js"></div><div class="left-col"><div class="overlay"></div><div class="intrude-less"><header id="header" class="inner"> <a href="/" class="profilepic"><img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></a><hgroup><h1 class="header-author"><a href="/">Smackgg</a></h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><div class="switch-btn"><div class="icon"><div class="icon-ctn"><div class="icon-wrap icon-house" data-idx="0"><div class="birdhouse"></div><div class="birdhouse_holes"></div></div><div class="icon-wrap icon-ribbon hide" data-idx="1"><div class="ribbon"></div></div><div class="icon-wrap icon-link hide" data-idx="2"><div class="loopback_l"></div><div class="loopback_r"></div></div></div></div><div class="tips-box hide"><div class="tips-arrow"></div><ul class="tips-inner"><li>菜单</li><li>标签</li><li>友情链接</li></ul></div></div><div class="switch-area"><div class="switch-wrap"><section class="switch-part switch-part1"><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></section><section class="switch-part switch-part2"><div class="widget tagcloud" id="js-tagcloud"> <a href="/tags/CSS/" style="font-size:10px">CSS</a> <a href="/tags/Electron/" style="font-size:10px">Electron</a> <a href="/tags/hexo/" style="font-size:13.33px">hexo</a> <a href="/tags/兼容性/" style="font-size:16.67px">兼容性</a> <a href="/tags/没事瞎扯/" style="font-size:10px">没事瞎扯</a> <a href="/tags/高性能JavaScript学习笔记/" style="font-size:20px">高性能JavaScript学习笔记</a></div></section><section class="switch-part switch-part3"><div id="js-friends"> <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a></div></section></div></div></header></div></div><div class="mid-col"><nav id="mobile-nav"><div class="overlay"><div class="slider-trigger"></div><h1 class="header-author js-mobile-header hide">Smackgg</h1></div><div class="intrude-less"><header id="header" class="inner"><div class="profilepic"> <img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></div><hgroup><h1 class="header-author">Smackgg</h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li><div class="clearfix"></div></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></header></div></nav><div class="body-wrap"><article id="post-高性能JavaScript3" class="article article-type-post" itemscope itemprop="blogPost"><div class="article-meta"> <a href="/2015/08/01/高性能JavaScript3/" class="article-date"><time datetime="2015-08-01T02:20:11.000Z" itemprop="datePublished">2015-08-01</time></a></div><div class="article-inner"> <input type="hidden" class="isFancy"><header class="article-header"><h1 class="article-title" itemprop="name"> JavaScript DOM编程优化</h1></header><div class="article-info article-info-post"><div class="article-tag tagcloud"><ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高性能JavaScript学习笔记/">高性能JavaScript学习笔记</a></li></ul></div><div class="article-category tagcloud"> <a class="article-category-link" href="/categories/高性能JavaScript-3/">高性能JavaScript-3</a></div><div class="counter-tag counter"> <span id="/2015/08/01/高性能JavaScript3/" class="leancloud_visitors post-title-link" style="font-size:12px" data-flag-title="JavaScript DOM编程优化">&nbsp; view</span></div><div class="clearfix"></div></div><div class="article-entry" itemprop="articleBody"><h1 id="第三章-DOM-Scripting-DOM-编程"><a href="#第三章-DOM-Scripting-DOM-编程" class="headerlink" title="第三章 DOM Scripting DOM  编程"></a><strong>第三章 DOM Scripting DOM 编程</strong></h1><p>　　回去看了一下前面两章的内容，发现写的内容都很多，但是过于繁琐，基本与原文解释的内容差不多，在后面的文章中，我将更多的写自己的理解，而不是更多的原文内容，如果对优化很感兴趣，可以详细的看一下《高性能JavaScript》这本书。在每章结束时，依旧有总结。<br><a id="more"></a><br>　　在这章主要讨论以下三个问题。</p><blockquote><ul><li>1.访问和修改 DOM 元素。</li><li>2.修改 DOM 元素的样式，造成重绘和重新排版。</li><li>3.通过 DOM 事件处理用户响应。<br>　　DOM 在浏览器中主要是用来操作 HTML 文档的。它天生就很慢，当你每次访问 DOM 时都需要耗费性能，这就好比每次 ECMAScript 需要访问 DOM 时，你需要过桥，交一次“过桥费”。所以，当你操作 DOM 次数越多，费用就越高。看一下下面这个例子：</li></ul></blockquote><pre><code>function innerHTMLLoop() {
+    for (var count = 0; count &lt; 15000; count++) {
+        document.getElementById(&apos;here&apos;).innerHTML += &apos;a&apos;;
+    }
+}
+</code></pre><p>　　这个例子中，你每次循环都要访问DOM两次，一次是读取innerHTML，另一次是写入它。再看一下下面的改进版本。</p><pre><code>function innerHTMLLoop2() {
+    var content = &apos;&apos;;
+    for (var count = 0; count &lt; 15000; count++) {
+        content += &apos;a&apos;;
+    }
+    document.getElementById(&apos;here&apos;).innerHTML += content;
+}
+</code></pre><p>　　<strong>使用局部变量存储更新后的内容，在循环结束时一次性写入，如果循环非常大，你可能会发现性能会比之前快了几百倍。</strong></p><p>　　还有一种优化方式，是用 innerHTML 来代替纯DOM ，innerHTML 会比纯 DOM方法快一点，下面两个例子分别建1000行的表：<br>innerHTML方法：</p><pre><code>function tableInnerHTML() {
+    var i, h = [&apos;&lt;table border=&quot;1&quot; width=&quot;100%&quot;&gt;&apos;];
+    h.push(&apos;&lt;thead&gt;&apos;);
+    h.push(&apos;&lt;tr&gt;&lt;th&gt;id&lt;\/th&gt;&lt;th&gt;yes?&lt;\/th&gt;&lt;th&gt;name&lt;\/th&gt;&lt;th&gt;url&lt;\/th&gt;&lt;th&gt;action&lt;\/th&gt;&lt;\/tr&gt;&apos;);
+    h.push(&apos;&lt;\/thead&gt;&apos;);
+    h.push(&apos;&lt;tbody&gt;&apos;);
+    for (i = 1; i &lt;= 1000; i++) {
+    h.push(&apos;&lt;tr&gt;&lt;td&gt;&apos;);
+    h.push(i);
+    h.push(&apos;&lt;\/td&gt;&lt;td&gt;&apos;);
+    h.push(&apos;And the answer is... &apos; + (i % 2 ? &apos;yes&apos; : &apos;no&apos;));
+    h.push(&apos;&lt;\/td&gt;&lt;td&gt;&apos;);
+    h.push(&apos;my name is #&apos; + i);
+    h.push(&apos;&lt;\/td&gt;&lt;td&gt;&apos;);
+    h.push(&apos;&lt;a href=&quot;http://example.org/&apos; + i + &apos;.html&quot;&gt;http://example.org/&apos; + i + &apos;.html&lt;\/a&gt;&apos;);
+    h.push(&apos;&lt;\/td&gt;&lt;td&gt;&apos;);
+    h.push(&apos;&lt;ul&gt;&apos;);
+    h.push(&apos; &lt;li&gt;&lt;a href=&quot;edit.php?id=&apos; + i + &apos;&quot;&gt;edit&lt;\/a&gt;&lt;\/li&gt;&apos;);
+    h.push(&apos; &lt;li&gt;&lt;a href=&quot;delete.php?id=&quot;&apos; + i + &apos;-id001&quot;&gt;delete&lt;\/a&gt;&lt;\/li&gt;&apos;);
+    h.push(&apos;&lt;\/ul&gt;&apos;);
+    h.push(&apos;&lt;\/td&gt;&apos;);
+    h.push(&apos;&lt;\/tr&gt;&apos;);
+    }
+    h.push(&apos;&lt;\/tbody&gt;&apos;);
+    h.push(&apos;&lt;\/table&gt;&apos;);
+    document.getElementById(&apos;here&apos;).innerHTML = h.join(&apos;&apos;);
+};
+</code></pre><p>如果使用 DOM 方法创建同样的表，代码有些冗长：</p><pre><code>function tableDOM() {
+    var i, table, thead, tbody, tr, th, td, a, ul, li;
+    tbody = document.createElement (&apos;tbody&apos;);
+    for (i = 1; i &lt;= 1000; i++) {
+        tr = document.createElement (&apos;tr&apos;);
+        td = document.createElement (&apos;td&apos;);
+        td.appendChild(document.createTextNode((i % 2) ? &apos;yes&apos; : &apos;no&apos;));
+        tr.appendChild(td);
+        td = document.createElement (&apos;td&apos;);
+        td.appendChild(document.createTextNode(i));
+        tr.appendChild(td);
+        td = document.createElement (&apos;td&apos;);
+        td.appendChild(document.createTextNode(&apos;my name is #&apos; + i));
+        tr.appendChild(td);
+        a = document.createElement (&apos;a&apos;);
+        a.setAttribute(&apos;href&apos;, &apos;http://example.org/&apos; + i + &apos;.html&apos;);
+        a.appendChild(document.createTextNode(&apos;http://example.org/&apos; + i + &apos;.html&apos;));
+        td = document.createElement (&apos;td&apos;);
+        td.appendChild(a);
+        tr.appendChild(td);
+        ul = document.createElement (&apos;ul&apos;);
+        a = document.createElement (&apos;a&apos;);
+        a.setAttribute(&apos;href&apos;, &apos;edit.php?id=&apos; + i);
+        a.appendChild(document.createTextNode(&apos;edit&apos;));
+        li = document.createElement (&apos;li&apos;);
+        li.appendChild(a);
+        ul.appendChild(li);
+        a = document.createElement (&apos;a&apos;);
+        a.setAttribute(&apos;href&apos;, &apos;delete.php?id=&apos; + i);
+        a.appendChild(document.createTextNode(&apos;delete&apos;));
+        li = document.createElement (&apos;li&apos;);
+        li.appendChild(a);
+        ul.appendChild(li);
+        td = document.createElement (&apos;td&apos;);
+        td.appendChild(ul);
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+    }
+    tr = document.createElement (&apos;tr&apos;);
+    th = document.createElement (&apos;th&apos;);
+    th.appendChild(document.createTextNode(&apos;yes?&apos;));
+    tr.appendChild(th);
+    th = document.createElement (&apos;th&apos;);
+    th.appendChild(document.createTextNode(&apos;id&apos;));
+    tr.appendChild(th);
+    th = document.createElement (&apos;th&apos;);
+    th.appendChild(document.createTextNode(&apos;name&apos;));
+    tr.appendChild(th);
+    th = document.createElement(&apos;th&apos;);
+    th.appendChild(document.createTextNode(&apos;url&apos;));
+    tr.appendChild(th);
+    th = document.createElement(&apos;th&apos;);
+    th.appendChild(document.createTextNode(&apos;action&apos;));
+    tr.appendChild(th);
+    thead = document.createElement(&apos;thead&apos;);
+    thead.appendChild(tr);
+    table = document.createElement(&apos;table&apos;);
+    table.setAttribute(&apos;border&apos;, 1);
+    table.setAttribute(&apos;width&apos;, &apos;100%&apos;);
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    document.getElementById(&apos;here&apos;).appendChild(table);
+};
+</code></pre><blockquote><p>注意：在 webkit内核的浏览器中，DOM的方法更快。所以，决定使用哪种方法更快取决于你的浏览器。如果在一个性能苛刻的操作中更新一大块 HTML 页面，innerHTML 在大多数浏览器中执行更快。但对于大多数日常操作而言，其差异并不大，所以你应当根据代码可读性，可维护性，团队习惯，代码风格来<br>综合决定采用哪种方法。</p></blockquote><p>　　上面说到的建1000行表也可以用节点克隆来解决，但是性能提高的不是很明显，这里不再细说。</p><hr><p>HTML 集合是用于存放 DOM 节点引用的类数组对象。下列函数的返回值就是一个集合：</p><pre><code>document.getElementsByName()
+document.getElementsByClassName()
+document.getElementsByTagName()
+document.images
+document.links
+...
+</code></pre><p>这里有一点需要优化的就是集合的遍历，集合的遍历是没有数组的遍历速度快的，所以尽量的将HTML集合拷贝到一个数组中，再进行遍历，看一下下面的例子：</p><pre><code>function toArray(coll) {
+    for (var i = 0, a = [], len = coll.length; i &lt; len; i++) {
+        a[i] = coll[i];
+    }
+    return a;
+}
+var coll = document.getElementsByTagName_r(&apos;div&apos;);
+var arr = toArray(coll)
+//比较下面两个函数的快慢。
+//slower
+function loopCollection() {
+    for (var count = 0; count &lt; coll.length; count++) {
+    }
+}
+// faster
+function loopCopiedArray() {
+    for (var count = 0; count &lt; arr.length; count++) {
+    }
+}
+</code></pre><p>这个例子中还有很多的地方可以优化，比如“.length”，无论是调用数组还是集合的length属性，都意味着每次都要重新运行查询过程。所以，最好的办法是将length属性缓存到局部变量中，同样的，如果再循环中多次访问同一个集合元素，也用局部变量缓存它：</p><pre><code>function collectionNodesLocal() {
+    var coll = document.getElementsByTagName_r(&apos;div&apos;),
+    len = coll.length,
+    name = &apos;&apos;,
+    el = null;
+    for (var count = 0; count &lt; len; count++) {
+        el = coll[count];
+        name = el.nodeName;
+        name = el.nodeType;
+        name = el.tagName;
+    }
+    return name;
+};
+</code></pre><p>这样才能让你的DOM访问更有效率，节省性能的开销。</p><hr><p>在抓取节点的时候，因为节点的类型有很多，如注释节点和文本节点等。而我们常用的是元素节点，所以，此时选择只表示元素节点的DOM属性:<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img3-1.png" alt="只表示元素节点的 DOM 属性（HTML 标签）和表示所有节点的属性"></p><p>使用CSS选择器尽量使用浏览器原生的DOM函数，如： querySelectorAll()、querySelector等。</p><hr><p>尽量阻止重排现象，否则会导致你的性能大减。在下述情况中会发生重排版：</p><blockquote><ul><li>添加或删除可见的 DOM 元素.</li><li>元素位置改变.</li><li>元素尺寸改变（因为边距，填充，边框宽度，宽度，高度等属性改变）</li><li>内容改变，例如，文本改变或图片被另一个不同尺寸的所替代</li><li>最初的页面渲染</li><li>浏览器窗口改变尺寸</li></ul></blockquote><p>　　根据改变的性质，渲染树上或大或小的一部分需要重新计算。某些改变可导致重排版整个页面：例如，当一个滚动条出现时。</p><p>　　大多数浏览器通过队列化修改和批量显示优化重排版过程。然而，你可<br>能（经常不由自主地）强迫队列刷新并要求所有计划改变的部分立刻应用。获取布局信息的操作将导致刷新队列动作，这意味着使用了下面这些方法：</p><pre><code>offsetTop, offsetLeft, offsetWidth, offsetHeight
+scrollTop, scrollLeft, scrollWidth, scrollHeight
+clientTop, clientLeft, clientWidth, clientHeight
+getComputedStyle() (currentStyle in IE)（在 IE 中此函数称为 currentStyle)
+</code></pre><p>在改变风格的过程中，最好不要使用前面列出的那些属性。任何一个访问都将刷新渲染队列，即使你正在获取那些最近未发生改变的或者与最新的改变无关的布局信息。</p><p>在改变CSS属性时，尽量将所有改变合并在一起执行。只修改一次DOM。可以通过cssText来实现：</p><pre><code>var el = document.getElementById(&apos;mydiv&apos;);
+el.style.cssText = &apos;border-left: 1px; border-right: 2px; padding: 5px;&apos;;
+</code></pre><p>下面例子是常见的写法，与上面的例子相比慢了很多。</p><pre><code>var el = document.getElementById(&apos;mydiv&apos;);
+el.style.borderLeft = &apos;1px&apos;;
+el.style.borderRight = &apos;2px&apos;;
+el.style.padding = &apos;5px&apos;;
+</code></pre><p>减少重排的方法一：<br>　　从文档流中摘除该元素–&gt;对其应用多重改变–&gt;将元素带回文档中<br>摘除元素可以用以下方法来进行：</p><blockquote><ul><li>隐藏元素，进行修改，然后再显示它。</li><li>使用一个文档片断在已存 DOM 之外创建一个子树，然后将它拷贝到文档中。</li><li>将原始元素拷贝到一个脱离文档的节点中，修改副本，然后覆盖原始元素。<br>减少重排的方法二：<br>　　在文档之外创建并更新一个文档片断，然后将它附加在原始列表上。文档片断是一个轻量级的 document 对象，它被设计专用于更新、移动节点之类的任务。文档片断一个便利的语法特性是当你向节点附加一个片断时，实际添加的是文档片断的子节点群，而不是片断自己。<br>减少重排的方法三：<br>　　创建要更新节点的副本，然后在副本上操作，最后用新节点覆盖老节点。</li></ul></blockquote><hr><blockquote><ul><li><p>大量的使用hover会降低反应速度，在IE8中更显著。</p></li><li><p>尽量使用时间托管来绑定事件，来提高性能。</p></li></ul></blockquote><hr><h1 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h1><hr><p>　　DOM 访问和操作是现代网页应用中很重要的一部分。 但每次你通过桥梁从 ECMAScript 岛到达 DOM 岛时，都会被收取“过桥费”。为减少 DOM 编程中的性能损失，请牢记以下几点：</p><blockquote><ul><li>最小化 DOM 访问，在 JavaScript 端做尽可能多的事情。</li><li>在反复访问的地方使用局部变量存放 DOM 引用.</li><li>小心地处理 HTML 集合，因为他们表现出“存在性”，总是对底层文档重新查询。将集合的 length 属性缓存到一个变量中，在迭代中使用这个变量。如果经常操作这个集合，可以将集合拷贝到数组中。</li><li>如果可能的话，使用速度更快的 API，诸如 querySelectorAll()和 firstElementChild。</li><li>注意重绘和重排版；批量修改风格，离线操作 DOM 树，缓存并减少对布局信息的访问。</li><li>动画中使用绝对坐标，使用拖放代理。</li><li>使用事件托管技术最小化事件句柄数量。</li></ul></blockquote></div></div><nav id="article-nav"> <a href="/2015/07/31/作用域链和标识符详细解析/" id="article-nav-newer" class="article-nav-link-wrap"><strong class="article-nav-caption">&lt;</strong><div class="article-nav-title"> 作用域链和标识符详细解析</div></a><a href="/2015/08/02/高性能JavaScript4/" id="article-nav-older" class="article-nav-link-wrap"><div class="article-nav-title">JavaScript 算法和流程控制的优化</div> <strong class="article-nav-caption">&gt;</strong></a></nav></article><div class="ds-share share" data-thread-key="高性能JavaScript3" data-title="JavaScript DOM编程优化" data-url="http://blog.smackdown.gebilaowu.cn/2015/08/01/高性能JavaScript3/" data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" data-content="JavaScript DOM编程优化"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li><li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li><li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li><li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li><li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div class="duoshuo"><div class="ds-thread" data-thread-key="高性能JavaScript3" data-title="JavaScript DOM编程优化" data-url="http://blog.smackdown.gebilaowu.cn/2015/08/01/高性能JavaScript3/"></div><script type="text/javascript">var duoshuoQuery={short_name:"winnerweb"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}()</script></div></div><footer id="footer"><div class="outer"><div id="footer-info"><div class="footer-left"> &copy; 2017 Smackgg</div><div class="footer-right"> <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a></div></div></div></footer></div><link rel="stylesheet" href="/fancybox/jquery.fancybox.css"><script>var yiliaConfig={fancybox:!0,mathjax:!0,animate:!0,isHome:!1,isPost:!0,isArchive:!1,isTag:!1,isCategory:!1,open_in_new:!1}</script><script src="/js/main.js"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script></div></body></html>

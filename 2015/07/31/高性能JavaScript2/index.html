@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>JavaScript数据访问的优化 | Smackdown&#39;s blog</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="description" content="第二章 Data Access 数据访问本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。"><meta name="keywords" content="高性能JavaScript学习笔记"><meta property="og:type" content="article"><meta property="og:title" content="JavaScript数据访问的优化"><meta property="og:url" content="http://blog.smackdown.gebilaowu.cn/2015/07/31/高性能JavaScript2/index.html"><meta property="og:site_name" content="Smackdown's blog"><meta property="og:description" content="第二章 Data Access 数据访问本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img2-1.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-2.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-3.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-4.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-5.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-6.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-7.png"><meta property="og:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-8.png"><meta property="og:updated_time" content="2016-12-14T04:25:10.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JavaScript数据访问的优化"><meta name="twitter:description" content="第二章 Data Access 数据访问本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。"><meta name="twitter:image" content="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img2-1.png"><link rel="alternative" href="/atom.xml" title="Smackdown&#39;s blog" type="application/atom+xml"><link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/favicon.ico"><link rel="stylesheet" href="/css/style.css"><script>!function(){var t=document.createElement("script"),s=window.location.protocol.split(":")[0];"https"===s?t.src="https://zz.bdstatic.com/linksubmit/push.js":t.src="http://push.zhanzhang.baidu.com/push.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}()</script><script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-85415703-1","auto"),ga("send","pageview")</script><script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script><script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("K1qAIJa0JgKeGUnrlq0G526F-gzGzoHsz","n4XwRe0iBOxWpBaYJ7HNWPA3")</script><script src="/js/Counter.js"></script></head><body><div id="container"><div id="particles-js"></div><div class="left-col"><div class="overlay"></div><div class="intrude-less"><header id="header" class="inner"> <a href="/" class="profilepic"><img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></a><hgroup><h1 class="header-author"><a href="/">Smackgg</a></h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><div class="switch-btn"><div class="icon"><div class="icon-ctn"><div class="icon-wrap icon-house" data-idx="0"><div class="birdhouse"></div><div class="birdhouse_holes"></div></div><div class="icon-wrap icon-ribbon hide" data-idx="1"><div class="ribbon"></div></div><div class="icon-wrap icon-link hide" data-idx="2"><div class="loopback_l"></div><div class="loopback_r"></div></div></div></div><div class="tips-box hide"><div class="tips-arrow"></div><ul class="tips-inner"><li>菜单</li><li>标签</li><li>友情链接</li></ul></div></div><div class="switch-area"><div class="switch-wrap"><section class="switch-part switch-part1"><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></section><section class="switch-part switch-part2"><div class="widget tagcloud" id="js-tagcloud"> <a href="/tags/CSS/" style="font-size:10px">CSS</a> <a href="/tags/Electron/" style="font-size:10px">Electron</a> <a href="/tags/hexo/" style="font-size:13.33px">hexo</a> <a href="/tags/兼容性/" style="font-size:16.67px">兼容性</a> <a href="/tags/没事瞎扯/" style="font-size:10px">没事瞎扯</a> <a href="/tags/高性能JavaScript学习笔记/" style="font-size:20px">高性能JavaScript学习笔记</a></div></section><section class="switch-part switch-part3"><div id="js-friends"> <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a></div></section></div></div></header></div></div><div class="mid-col"><nav id="mobile-nav"><div class="overlay"><div class="slider-trigger"></div><h1 class="header-author js-mobile-header hide">Smackgg</h1></div><div class="intrude-less"><header id="header" class="inner"><div class="profilepic"> <img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></div><hgroup><h1 class="header-author">Smackgg</h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li><div class="clearfix"></div></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></header></div></nav><div class="body-wrap"><article id="post-高性能JavaScript2" class="article article-type-post" itemscope itemprop="blogPost"><div class="article-meta"> <a href="/2015/07/31/高性能JavaScript2/" class="article-date"><time datetime="2015-07-31T05:42:30.000Z" itemprop="datePublished">2015-07-31</time></a></div><div class="article-inner"> <input type="hidden" class="isFancy"><header class="article-header"><h1 class="article-title" itemprop="name"> JavaScript数据访问的优化</h1></header><div class="article-info article-info-post"><div class="article-tag tagcloud"><ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高性能JavaScript学习笔记/">高性能JavaScript学习笔记</a></li></ul></div><div class="article-category tagcloud"> <a class="article-category-link" href="/categories/高性能JavaScript-2/">高性能JavaScript-2</a></div><div class="counter-tag counter"> <span id="/2015/07/31/高性能JavaScript2/" class="leancloud_visitors post-title-link" style="font-size:12px" data-flag-title="JavaScript数据访问的优化">&nbsp; view</span></div><div class="clearfix"></div></div><div class="article-entry" itemprop="articleBody"><h1 id="第二章-Data-Access-数据访问"><a href="#第二章-Data-Access-数据访问" class="headerlink" title="第二章 Data Access 数据访问"></a><strong>第二章 Data Access 数据访问</strong></h1><p>本文章结尾处有结论，不愿意看原理或者已经懂原理的可以直接看结论。</p><h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>　　经典计算机科学的一个问题是确定数据应当存放在什么地方， 以实现最佳的读写效率。数据存储的位置关系到访问的速度。在 JavaScript 中，有四种基本的数据访问位置：</p><blockquote><ul><li>直接量： 包括字符串，数字，布尔值，对象，数组，函数，正则表达式，具有特殊意义的空值（null），以及未定义（undefined）。</li><li>变量：用 var 关键字创建用于存储数据值。</li><li>数组项：具有数字索引，存储一个 JavaScript 数组对象。</li><li>对象成员：具有字符串索引，存储一个 JavaScript 对象。</li></ul></blockquote><p>　　在一些老的浏览器中，直接量和局部变量的访问速度远远快于数组项和对象成员的访问速度（Firefox3 中优化过数组项，所以访问速度非常快）。**所以，如果关心运行速度，建议尽量使用直接量和局部变量，限制数组项和对象成员的使用。下图是对不同数据类型进行 200 000 次读操作所用的时间<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能js-img2-1.png" alt="对不同数据类型进行 200 000 次读操作所用的时间"></p><blockquote><p>下面介绍几种模式来避免这种情况并优化你的代码。</p></blockquote><h1 id="一-Managing-Scope-管理作用域"><a href="#一-Managing-Scope-管理作用域" class="headerlink" title="一.Managing Scope 管理作用域"></a>一.Managing Scope 管理作用域</h1><hr><p>　　无论是从性能还是功能考虑，作用域链都是理解JavaScript的关键。但是要理解速度与作用域的关系，首先要理解作用域的工作原理。<br><strong>1.Scope Chains and Identifier Resolution 作用域链和标识符解析</strong><br>在这里不详细叙述作用域的工作原理，只是简单的说明一下作用域链的工作过程。如果想看详细原理，请参看我的文章<a href="https://smackgg.github.io/blog/2015/07/31/%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE%E5%92%8C%E6%A0%87%E8%AF%86%E7%AC%A6%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90/" target="_blank" rel="external">作用域链和标识符详细解析</a>。<br>　　每一段 JavaScript 代码（全局代码或者函数）都有一个与之关联的作用域链(scope chain)。这个作用域链是一个对象链表，这组对象定义了这段代码“作用域中”的变量。当JavaScript需要查找变量x的值得时候（这个过程叫做变量解析），它会从链中的第一个对象(第一个对象是局部变量)开始查找，如果这个对象有一个名为x的属性，则会直接使用，若第二个对象依然没有，则会继续寻找下一个对象。以此类推，直至全局对象。若作用域链上没有任何一个对象含有属性x，那么就会返回一个undefined，在严格规范的ECMAScript 5中，会抛出一个异常。函数运行时每个标识符都要经过这样的搜索过程，正是这种搜索过程影响了性能。</p><p><strong>Identifier Resolution Performance 标识符识别性能</strong><br>　　在运行期上下文中，一个标识符所处的位置越深，读写速度也就越慢，所以局部变量访问速度是最快的，全局变量位于作用域链的最后一个位置是最慢的。下图展示了不同深度标识符的读写速度。（第一个写，第二个是读）<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-2.png" alt="写操作的标识符识别速度"><br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-3.png" alt="读操作的标识符识别速度"><br>　　采用优化JavaScript引擎的浏览器，如Safari4，访问域外标识符时没有性能的损失。其它浏览器都有较大幅度的影响。早期的IE6和Firefox2，有着令人难以置信的陡峭斜坡，如果此图包含它们的数据，曲线高点将超出图表边界。</p><blockquote><p>所以，在没有优化JavaScript引擎的浏览器中，尽可能使用局部变量。用局部变量存储本地范围之外的变量值。如果在函数中多次使用，参考以下例子：</p></blockquote><pre><code>function initUI(){
+    var bd = document.body,
+    links = document.getElementsByTagName_r(&quot;a&quot;),
+    i = 0,
+    len = links.length;
+    while(i &lt; len){
+        update(links[i++]);
+    }
+    document.getElementById(&quot;go-btn&quot;).onclick = function(){
+        start();
+    };
+    bd.className = &quot;active&quot;;
+}
+</code></pre><p>　　次函数包含对document的引用，而document是全局变量。每次搜索此变量都要遍历整个作用域链。上述代码可以优化为：</p><pre><code>function initUI(){
+    var doc = document,
+    bd = doc.body,
+    links = doc.getElementsByTagName_r(&quot;a&quot;),
+    i = 0,
+    len = links.length;
+    while(i &lt; len){
+        update(links[i++]);
+    }
+    doc.getElementById(&quot;go-btn&quot;).onclick = function(){
+        start();
+    };
+    bd.className = &quot;active&quot;;
+}
+</code></pre><p>　　这个简单的函数不会显示出巨大的改进，如果几十个全局变量被反复访问，那么这么做性能将有显著的提高。<br><strong>Scope Chain Augmentation 改变作用域链</strong><br>　　一般来说，一个运行期上下文的作用域链不会被改变。但是，有两种表达式可以在运行时临时改变运行期上下文作用域链。第一个是 with 表达式。第二种是try-catch。with 表达式为所有对象属性创建一个默认操作变量。在其他语言中，类似的功能通常用来避免书写一些<br>重复的代码。initUI()函数可以重写成如下样式：</p><pre><code>function initUI(){
+    with (document){ //avoid!
+    var bd = body,
+    links = getElementsByTagName_r(&quot;a&quot;),
+    i = 0,
+    len = links.length;
+    while(i &lt; len){
+        update(links[i++]);
+    }
+    getElementById(&quot;go-btn&quot;).onclick = function(){
+        start();
+    };
+        bd.className = &quot;active&quot;;
+    }
+}
+</code></pre><p>　　<strong>此重写的 initUI()版本使用了一个with表达式，避免多次书写“document”。这看起来似乎更有效率，而实际上却产生了一个性能问题。</strong><br>当代码流执行到一个with表达式时，运行期上下文的作用域链被临时改变了。一个新的可变对象将被创建，它包含指定对象的所有属性。此对象被插入到作用域链的前端，意味着现在函数的所有局部变量都被推入第二个作用域链对象中，所以访问代价更高了，正因为这个原因，最好不要使用 with 表达式。正如前面提到的，只要简单地将 document 存储在一个<br>局部变量中，就可以获得性能上的提升。（见下图）。<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-4.png" alt="with 表达式改变作用域链">。<br>　　在 JavaScript 中不只是 with 表达式人为地改变运行期上下文的作用域链，try-catch 表达式的 catch 子句具有相同效果。当 try 块发生错误时，程序流程自动转入 catch 块，并将异常对象推入作用域链前端的一个可变对象中。在 catch 块中，函数的所有局部变量现在被放在第二个作用域链对象中。例如：</p><pre><code>try {
+    methodThatMightCauseAnError();
+} catch (ex){
+    alert(ex.message); //scope chain is augmented here
+}
+</code></pre><p><strong>请注意，只要 catch 子句执行完毕，作用域链就会返回到原来的状态。</strong><br>　　如果使用得当， try-catch 表达式是非常有用的语句，所以不建议完全避免。 如果你计划使用一个 try-catch语句，请确保你了解可能发生的错误。一个 try-catch 语句不应该作为 JavaScript 错误的解决办法。如果你知道一个错误会经常发生，那说明应当修正代码本身的问题。<br>你可以通过精缩代码的办法最小化catch子句对性能的影响。一个很好的模式是将错误交给一个专用函数来处理。例子如下：</p><pre><code>try {
+    methodThatMightCauseAnError();
+} catch (ex){
+    handleError(ex); //delegate to handler method
+}
+</code></pre><p>　　handleError()函数是 catch 子句中运行的唯一代码。此函数以适当方法自由地处理错误，并接收由错误产生的异常对象。由于只有一条语句，没有局部变量访问，作用域链临时改变就不会影响代码的性能。<br><strong>Dynamic Scopes 动态作用域</strong><br>　　无论是 with 表达式还是 try-catch 表达式的 catch 子句，以及包含()的函数，都被认为是动态作用域。一个动态作用域只因代码运行而存在，因此无法通过静态分析（察看代码结构）来确定（是否存在动态作用域）</p><pre><code>function execute(code) {
+    (code);
+    function subroutine(){
+        return window;
+    }
+    var w = subroutine();
+    //what value is w?
+};
+</code></pre><p>　　execute()函数看上去像一个动态作用域，因为它使用了()。w 变量的值与 code 有关。大多数情况下，w将等价于全局的window对象，但是请考虑如下情况：</p><pre><code>execute(&quot;var window = {};&quot;)
+</code></pre><p>　　这种情况下，()在 execute()函数中创建了一个局部window变量。所以w将等价于这个局部window变量而不是全局的那个。所以说，不运行这段代码是没有办法了解具体情况的，标识符 window 的确切含义不能预先确定。<br>　　优化的 JavaScript 引擎，例如 Safari 的 Nitro 引擎，企图通过分析代码来确定哪些变量应该在任意时刻被访问，来加快标识符识别过程。这些引擎企图避开传统作用域链查找，取代以标识符索引的方式进行快速查找。当涉及一个动态作用域后，此优化方法就不起作用了。引擎需要切回慢速的基于哈希表的标识符识别方法，更像传统的作用域链搜索。<br>　　正因为这个原因，只在绝对必要时才推荐使用动态作用域。<br><strong>Closures, Scope, and Memory 闭包，作用域，和内存</strong><br>　　闭包是 JavaScript 最强大的一个方面，它允许函数访问局部范围之外的数据。闭包的使用通过 Douglas<br>Crockford的著作流行起来，当今在最复杂的网页应用中无处不在。不过，有一种性能影响与闭包有关。<br>　　为了解与闭包有关的性能问题，考虑下面的例子：</p><pre><code>function assignEvents(){
+    var id = &quot;xdi9592&quot;;
+    document.getElementById(&quot;save-btn&quot;).onclick = function(event){
+        saveDocument(id);
+    };
+}
+</code></pre><p>　　当 assignEvents()被执行时，一个激活对象被创建，并包含了一些应有的内容，其中包括 id变量。它将成为运行期上下文作用域链上的第一个对象，全局对象是第二个。当闭包创建时，[[Scope]]属性与这些对象一起被初始化（见下图）。<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-5.png" alt="assignEvents()运行期上下文的作用域链和闭包">。<br>　　由于闭包的[[Scope]]属性包含与运行期上下文作用域链相同的对象引用，会产生副作用。通常，一个函数的激活对象与运行期上下文一同销毁。当涉及闭包时，激活对象就无法销毁了，因为引用仍然存在于闭包的[[Scope]]属性中。这意味着脚本中的闭包与非闭包函数相比，需要更多内存开销。在大型网页应用中，<br>这可能是个问题，尤其在 Internet Explorer 中更被关注。IE 使用非本地 JavaScript 对象实现 DOM 对象，闭包可能导致内存泄露（更多信息参见第 3 章）。<br>　　当闭包被执行时，一个运行期上下文将被创建，它的作用域链与[[Scope]]中引用的两个相同的作用域链同时被初始化，然后一个新的激活对象为闭包自身被创建（参见下图）。<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-6.png" alt="闭包运行">。<br>　　注意闭包中使用的两个标识符，id 和 saveDocument，存在于作用域链第一个对象之后的位置上。这是闭包最主要的性能关注点：你经常访问一些范围之外的标识符，每次访问都导致一些性能损失。</p><blockquote><p>在脚本中最好是小心地使用闭包，内存和运行速度都值得被关注。但是，你可以通过本章早先讨论过的关于域外变量的处理建议，减轻对运行速度的影响：将常用的域外变量存入局部变量中，然后直接访问局部变量。</p></blockquote><p><strong>Prototypes 原形</strong><br>　　JavaScript中的对象是基于原形的。原形是其他对象的基础，定义并实现了一个新对象所必须具有的成员。这一概念完全不同于传统面向对象编程中“类”的概念，它定义了创建新对象的过程。原形对象为所有给定类型的对象实例所共享，因此所有实例共享原形对象的成员。<br>　　一个对象通过一个内部属性绑定到它的原形。Firefox，Safari，和 Chrome 向开发人员开放这一属性，称作<strong>proto</strong>其他浏览器不允许脚本访问这一属性。任何时候你创建一个内置类型的实例，如 Object 或 Array，这些实例自动拥有一个 Object 作为它们的原形。<br>　　因此，对象可以有两种类型的成员：实例成员（也称作“own”成员）和原形成员。实例成员直接存在于实例自身，而原形成员则从对象原形继承。考虑下面的例子：</p><pre><code>var book = {
+    title: &quot;High Performance JavaScript&quot;,
+    publisher: &quot;Yahoo! Press&quot;
+};
+alert(book.toString()); //&quot;[object Object]&quot;
+</code></pre><p>此代码中，book 对象有两个实例成员：title 和 publisher。注意它并没有定义 toString()接口，但是这个接口却被调用了，也没有抛出错误。toString()函数就是一个 book 对象继承的原形成员。下图显示出它们之间的关系。<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-7.png" alt="实例与原形的关系">。<br>　　处理对象成员的过程与变量处理十分相似。当 book.toString()被调用时，对成员进行名为“toString”的搜索，首先从对象实例开始，如果 book 没有名为 toString 的成员，那么就转向搜索原形对象，在那里发现了toString()方法并执行它。通过这种方法，booke 可以访问它的原形所拥有的每个属性或方法。<br>　　你可以使用 hasOwnProperty()函数确定一个对象是否具有特定名称的实例成员，（它的参数就是成员名称）。要确定对象是否具有某个名称的属性，你可以使用操作符 in。例如：</p><pre><code>var book = {
+    title: &quot;High Performance JavaScript&quot;,
+    publisher: &quot;Yahoo! Press&quot;
+};
+alert(book.hasOwnProperty(&quot;title&quot;)); //true
+alert(book.hasOwnProperty(&quot;toString&quot;)); //false
+alert(&quot;title&quot; in book); //true
+alert(&quot;toString&quot; in book); //true
+</code></pre><p>此代码中， hasOwnProperty()传入“title”时返回true， 因为title是一个实例成员。 传入“toString”时返回false，因为 toString 不在实例之中。如果使用 in 操作符检测这两个属性，那么返回都是 true，因为它既搜索实例又搜索原形。<br><strong>Prototype Chains 原形链</strong><br>对象的原形决定了一个实例的类型。默认情况下，所有对象都是 Object 的实例，并继承了所有基本方法，如 toString()。你可以用“构造器”创建另外一种类型的原形。例如：</p><pre><code>function Book(title, publisher){
+    this.title = title;
+    this.publisher = publisher;
+}
+Book.prototype.sayTitle = function(){
+    alert(this.title);
+};
+var book1 = new Book(&quot;High Performance JavaScript&quot;, &quot;Yahoo! Press&quot;);
+var book2 = new Book(&quot;JavaScript: The Good Parts&quot;, &quot;Yahoo! Press&quot;);
+alert(book1 instanceof Book); //true
+alert(book1 instanceof Object); //true
+book1.sayTitle(); //&quot;High Performance JavaScript&quot;
+alert(book1.toString()); //&quot;[object Object]&quot;
+</code></pre><p>原型链关系如下图：<br><img src="http://7xkj1z.com1.z0.glb.clouddn.com/高性能JavaScript-img2-8.png" alt="原形链"><br>　　注意，两个 Book 实例共享同一个原形链。每个实例拥有自己的 title 和 publisher 属性，但其他成员均继承自原形。当 book1.toString()被调用时，搜索工作必须深入原形链才能找到对象成员“toString”。正如你所<br>怀疑的那样，深入原形链越深，搜索的速度就会越慢。图2-11显示出成员在原形链中所处的深度与访问时间的关系。<br>　　虽然使用优化 JavaScript 引擎的新式浏览器在此任务中表现良好，但是老的浏览器，特别是 Internet Explorer 和 Firefox 3.5，每深入原形链一层都会增加性能损失。记住，搜索实例成员的过程比访问直接量<br>或者局部变量负担更重，所以增加遍历原形链的开销正好放大了这种效果。</p><p><strong>Nested Members 嵌套成员</strong><br>由于对象成员可能包含其它成员， 例如不太常见的写法 window.location.href 这种模式每遇到一个点号，JavaScript 引擎就要在对象成员上执行一次解析过程。成员嵌套越深，访问速度越慢。location.href 总是快于 window.location.href，而后者也要<br>比 window.location.href.toString()更快。<br><strong>Caching Object Member Values 缓存对象成员的值</strong></p><pre><code>function hasEitherClass(element, className1, className2){
+    return element.className == className1 || element.className == className2;
+}
+</code></pre><p>这段代码中element.className被访问了两次，而且在这个函数过程中它的值是不会变的。所以优化如下：</p><pre><code>function hasEitherClass(element, className1, className2){
+    var currentClassName = element.className;
+    return currentClassName == className1 || currentClassName == className2;
+}
+</code></pre><blockquote><p>一般来说，如果在同一个函数中你要多次读取同一个对象属性，最好将它存入一个局部变量。以局部变量替代属性，避免多余的属性查找带来性能开销。在处理嵌套对象成员时这点特别重要，它们会对运行速度产生难以置信的影响。</p></blockquote><h1 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h1><hr><p>在JavaScript中，数据存储位置可以对代码整体性能产生重要影响。有四种数据访问类型：直接量，变量，数组项，对象成员。它们有不同的性能考虑。</p><blockquote><ul><li>直接量和局部变量访问速度非常快，数组项和对象成员需要更长时间。</li><li>局部变量比域外变量快，因为它位于作用域链的第一个对象中。变量在作用域链中的位置越深，访问所需的时间就越长。全局变量总是最慢的，因为它们总是位于作用域链的最后一环。</li><li>避免使用 with 表达式， 因为它改变了运行期上下文的作用域链。 而且应当小心对待 try-catch 表达式的catch子句，因为它具有同样效果。</li><li>嵌套对象成员会造成重大性能影响，尽量少用。</li><li>一个属性或方法在原形链中的位置越深，访问它的速度就越慢。</li><li>一般来说，你可以通过这种方法提高JavaScript代码的性能：将经常使用的对象成员，数组项，和域外变量存入局部变量中。然后，访问局部变量的速度会快于那些原始变量。</li></ul></blockquote><hr><p>通过使用这些策略，你可以极大地提高那些需要大量 JavaScript 代码的网页应用的实际性能。</p></div></div><nav id="article-nav"> <a href="/2015/07/29/高性能JavaScript1/" id="article-nav-newer" class="article-nav-link-wrap"><strong class="article-nav-caption">&lt;</strong><div class="article-nav-title"> JavaScript加载和运行的优化</div></a><a href="/2015/07/31/作用域链和标识符详细解析/" id="article-nav-older" class="article-nav-link-wrap"><div class="article-nav-title">作用域链和标识符详细解析</div> <strong class="article-nav-caption">&gt;</strong></a></nav></article><div class="ds-share share" data-thread-key="高性能JavaScript2" data-title="JavaScript数据访问的优化" data-url="http://blog.smackdown.gebilaowu.cn/2015/07/31/高性能JavaScript2/" data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" data-content="JavaScript数据访问的优化"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li><li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li><li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li><li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li><li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div class="duoshuo"><div class="ds-thread" data-thread-key="高性能JavaScript2" data-title="JavaScript数据访问的优化" data-url="http://blog.smackdown.gebilaowu.cn/2015/07/31/高性能JavaScript2/"></div><script type="text/javascript">var duoshuoQuery={short_name:"winnerweb"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}()</script></div></div><footer id="footer"><div class="outer"><div id="footer-info"><div class="footer-left"> &copy; 2017 Smackgg</div><div class="footer-right"> <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a></div></div></div></footer></div><link rel="stylesheet" href="/fancybox/jquery.fancybox.css"><script>var yiliaConfig={fancybox:!0,mathjax:!0,animate:!0,isHome:!1,isPost:!0,isArchive:!1,isTag:!1,isCategory:!1,open_in_new:!1}</script><script src="/js/main.js"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script></div></body></html>

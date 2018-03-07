@@ -1,0 +1,81 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>JavaScript 字符串和正则表达式 | Smackdown&#39;s blog</title><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="description" content="第五章 Strings and Regular Expressions 字符串和正则表达式"><meta name="keywords" content="高性能JavaScript学习笔记"><meta property="og:type" content="article"><meta property="og:title" content="JavaScript 字符串和正则表达式"><meta property="og:url" content="http://blog.smackdown.gebilaowu.cn/2015/08/03/高性能JavaScript5/index.html"><meta property="og:site_name" content="Smackdown's blog"><meta property="og:description" content="第五章 Strings and Regular Expressions 字符串和正则表达式"><meta property="og:updated_time" content="2016-10-31T07:25:39.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JavaScript 字符串和正则表达式"><meta name="twitter:description" content="第五章 Strings and Regular Expressions 字符串和正则表达式"><link rel="alternative" href="/atom.xml" title="Smackdown&#39;s blog" type="application/atom+xml"><link rel="icon" href="http://7xkj1z.com1.z0.glb.clouddn.com/favicon.ico"><link rel="stylesheet" href="/css/style.css"><script>!function(){var t=document.createElement("script"),s=window.location.protocol.split(":")[0];"https"===s?t.src="https://zz.bdstatic.com/linksubmit/push.js":t.src="http://push.zhanzhang.baidu.com/push.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)}()</script><script>!function(e,t,a,n,c,o,s){e.GoogleAnalyticsObject=c,e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)},e[c].l=1*new Date,o=t.createElement(a),s=t.getElementsByTagName(a)[0],o.async=1,o.src=n,s.parentNode.insertBefore(o,s)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-85415703-1","auto"),ga("send","pageview")</script><script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script><script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("K1qAIJa0JgKeGUnrlq0G526F-gzGzoHsz","n4XwRe0iBOxWpBaYJ7HNWPA3")</script><script src="/js/Counter.js"></script></head><body><div id="container"><div id="particles-js"></div><div class="left-col"><div class="overlay"></div><div class="intrude-less"><header id="header" class="inner"> <a href="/" class="profilepic"><img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></a><hgroup><h1 class="header-author"><a href="/">Smackgg</a></h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><div class="switch-btn"><div class="icon"><div class="icon-ctn"><div class="icon-wrap icon-house" data-idx="0"><div class="birdhouse"></div><div class="birdhouse_holes"></div></div><div class="icon-wrap icon-ribbon hide" data-idx="1"><div class="ribbon"></div></div><div class="icon-wrap icon-link hide" data-idx="2"><div class="loopback_l"></div><div class="loopback_r"></div></div></div></div><div class="tips-box hide"><div class="tips-arrow"></div><ul class="tips-inner"><li>菜单</li><li>标签</li><li>友情链接</li></ul></div></div><div class="switch-area"><div class="switch-wrap"><section class="switch-part switch-part1"><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></section><section class="switch-part switch-part2"><div class="widget tagcloud" id="js-tagcloud"> <a href="/tags/CSS/" style="font-size:10px">CSS</a> <a href="/tags/Electron/" style="font-size:10px">Electron</a> <a href="/tags/hexo/" style="font-size:13.33px">hexo</a> <a href="/tags/兼容性/" style="font-size:16.67px">兼容性</a> <a href="/tags/没事瞎扯/" style="font-size:10px">没事瞎扯</a> <a href="/tags/高性能JavaScript学习笔记/" style="font-size:20px">高性能JavaScript学习笔记</a></div></section><section class="switch-part switch-part3"><div id="js-friends"> <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/smackgg/hexo-theme-smackdown">smackdown</a></div></section></div></div></header></div></div><div class="mid-col"><nav id="mobile-nav"><div class="overlay"><div class="slider-trigger"></div><h1 class="header-author js-mobile-header hide">Smackgg</h1></div><div class="intrude-less"><header id="header" class="inner"><div class="profilepic"> <img lazy-src="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" class="js-avatar"></div><hgroup><h1 class="header-author">Smackgg</h1></hgroup><p class="header-subtitle">扎心了，老铁。</p><nav class="header-menu"><ul><li><a href="/">主页</a></li><li><a href="/archives">所有文章</a></li><div class="clearfix"></div></ul></nav><nav class="header-nav"><div class="social"> <a class="github" target="_blank" href="https://github.com/smackgg" title="github">github</a> <a class="zhihu" target="_blank" href="https://www.zhihu.com/people/xu-yan-35-49/activities" title="zhihu">zhihu</a> <a class="mail" target="_blank" href="/xysmackdown@gmail.com" title="mail">mail</a> <a class="qq" target="_blank" href="/1260977477" title="qq">qq</a></div></nav></header></div></nav><div class="body-wrap"><article id="post-高性能JavaScript5" class="article article-type-post" itemscope itemprop="blogPost"><div class="article-meta"> <a href="/2015/08/03/高性能JavaScript5/" class="article-date"><time datetime="2015-08-03T05:42:23.000Z" itemprop="datePublished">2015-08-03</time></a></div><div class="article-inner"> <input type="hidden" class="isFancy"><header class="article-header"><h1 class="article-title" itemprop="name"> JavaScript 字符串和正则表达式</h1></header><div class="article-info article-info-post"><div class="article-tag tagcloud"><ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/高性能JavaScript学习笔记/">高性能JavaScript学习笔记</a></li></ul></div><div class="article-category tagcloud"> <a class="article-category-link" href="/categories/高性能JavaScript-5/">高性能JavaScript-5</a></div><div class="counter-tag counter"> <span id="/2015/08/03/高性能JavaScript5/" class="leancloud_visitors post-title-link" style="font-size:12px" data-flag-title="JavaScript 字符串和正则表达式">&nbsp; view</span></div><div class="clearfix"></div></div><div class="article-entry" itemprop="articleBody"><h1 id="第五章-Strings-and-Regular-Expressions-字符串和正则表达式"><a href="#第五章-Strings-and-Regular-Expressions-字符串和正则表达式" class="headerlink" title="第五章 Strings and Regular Expressions 字符串和正则表达式"></a><strong>第五章 Strings and Regular Expressions 字符串和正则表达式</strong></h1><a id="more"></a><blockquote><ul><li>字符串的连接尽量使用简单的+和+=，这样的性能更高。</li></ul></blockquote><pre><code>str += &quot;one&quot; + &quot;two&quot;;
+//下面的方式将比上面的快。因为少了一步建立临时字符串。
+str += &quot;one&quot;;
+str += &quot;two&quot;;
+//下面的代码也可以优化
+str = str + &quot;one&quot; + &quot;two&quot;;
+//但是下面的代码还是要建立临时字符串
+str = &quot;one&quot; + str + &quot;two&quot;;
+</code></pre><blockquote><ul><li>在IE中，以上的技术并不适用。</li></ul></blockquote><p>　　在 IE8中，连接字符串只是记录下构成新字符串的各部分字符串的引用。在最后时刻（当你真正使用连接后的字符串时），各部分字符串才被逐个拷贝到一个新的“真正的”字符串中，然后用它取代先前的字符串引用，所以并非每次使用字符串时都发生合并操作。<br>　　在 IE8 以前的版本更慢，它每连接一堆字符串都要复制到新分配的内存中。所以str = str + “one” + “two”;这段代码要拷贝两次。<br>　　在IE中使用数组联结方法效率更高。</p><pre><code>// 优化前
+var str = &quot;I&apos;m a thirty-five character string.&quot;,
+newStr = &quot;&quot;,
+appends = 5000;
+while (appends--) {
+    newStr += str;
+}
+// 优化后
+var str = &quot;I&apos;m a thirty-five character string.&quot;,
+strs = [],
+newStr,
+appends = 5000;
+while (appends--) {
+    strs[strs.length] = str;
+}
+newStr = strs.join(&quot;&quot;);
+</code></pre><blockquote><ul><li>concat方法也可以连接字符串，但是比直接+或+=要慢一些。</li></ul></blockquote><hr><blockquote><ul><li>正则表达式的工作过程。</li></ul></blockquote><p>编译–&gt; 设置起始位置–&gt; 匹配每个正则表达式的字元–&gt;匹配成功或失败</p><blockquote><ul><li><p>正则的回溯，在这里不详细写了，内容太多，感兴趣的可以去网上查写资料看一下。</p></li><li><p>回溯失控解决办法：具体化。</p></li></ul></blockquote><p>　　此类问题的解决办法在于尽可能具体地指出分隔符之间的字符匹配形式。例如”.<em>?”用于匹配双引号包围的一个字符串。用更具体的[^”\rn]</em>取代过于宽泛的.*?，就去除了回溯时可能发生的几种情况，如尝试<br>用点号匹配引号，或者扩展搜索超出预期范围。<br>　　如果没有办法替换更具体的，如[^&lt;]替代[\s\S]因为在搜索过程<br>中可能会遇到其他类型的标签，你可以通过重复一个非捕获组来达到同样效果， 它包含一个回顾 （阻塞下一个所需的标签）和[\s\S]（任意字符）元序列。这确保中间位置上你查找的每个标签都会失败，然后，<br>更重要的是，[\s\S]模板在你在回顾过程中阻塞的标签被发现之前不能被扩展。</p><blockquote><ul><li>修剪字符串。去除字符串首尾的空格是一个简单而常见的任务。</li></ul></blockquote><p>　　可以用正则表达式来进行修剪。</p><pre><code>if (!String.prototype.trim) {
+    String.prototype.trim = function() {
+        return this.replace(/^\s+/, &quot;&quot;).replace(/\s+$/, &quot;&quot;);
+    }
+}
+// test the new method...
+// tab (\t) and line feed (\n) characters are
+// included in the leading whitespace.
+var str = &quot; \t\n test string &quot;.trim();
+alert(str == &quot;test string&quot;); // alerts &quot;true&quot;
+</code></pre><p>if 语句避免覆盖 trim 函数如果它已经存在，因为原生函数进行了优化，通常远远快于你用 JavaScript 自己写的函数。<br>下面是几种正则修剪的代码：</p><pre><code>// trim 2 
+String.prototype.trim = function() {
+return this.replace(/^\s+|\s+$/g, &quot;&quot;);
+}
+</code></pre><p>这可能是最通常的解决方案。它通过分支功能合并了两个简单的正则表达式，并使用/g（全局）标记替换所有匹配，而不只是第一个（当目标字符串首尾都有空格时它将匹配两次）。这并不是一个可怕的方法，但是对长字符串操作时，它比使用两个简单的子表达式要慢，因为两个分支选项都要测试每个字符位置。</p><pre><code>// trim 3
+String.prototype.trim = function() {
+    return this.replace(/^\s*([\s\S]*?)\s*$/, &quot;$1&quot;);
+}
+</code></pre><p>这个正则表达式的工作原理是匹配整个字符串，捕获从第一个到最后一个非空格字符之间的序列，记入后向引用 1。然后使用后向引用 1 替代整个字符串，就留下了这个字符串的修剪版本。</p><pre><code>// trim 4
+String.prototype.trim = function() {
+    return this.replace(/^\s*([\s\S]*\S)?\s*$/, &quot;$1&quot;);
+}
+</code></pre><p>这个表达式与上一个很像，但出于性能原因以贪婪量词取代了懒惰量词。为确保捕获组只匹配到最后一个非空格字符，必需尾随一个\S。然而，由于正则表达式必需能够匹配全部由空格组成的字符串，整个捕获组通过尾随一个?量词而成为可选组。</p><pre><code>// trim 5
+String.prototype.trim = function() {
+    return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, &quot;$1&quot;);
+}
+</code></pre><p>下面代码是不用正则表达式写的修剪字符串，虽然性能不如正则表达式，但是还是值得学习的。</p><pre><code>// trim 6
+String.prototype.trim = function() {
+    var start = 0,
+    end = this.length - 1,
+    ws = &quot; \n\r\t\f\x0b\xa0\u1680\u180e\u2000\u2001\u2002\u2003
+    \u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u202f
+    \u205f\u3000\ufeff&quot;;
+    while (ws.indexOf(this.charAt(start)) &gt; -1) {
+        start++;
+    }
+    while (end &gt; start &amp;&amp; ws.indexOf(this.charAt(end)) &gt; -1) {
+        end--;
+    }
+    return this.slice(start, end + 1);
+}
+</code></pre><p>此代码中的 ws 变量包括 ECMAScript 5 中定义的所有空白字符。 出于效率原因，在得到修剪区的起始和终止位置之前避免拷贝字符串的任何部分。</p><hr><h1 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h1><hr><p>密集的字符串操作和粗浅地编写正则表达式可能是主要性能障碍，但本章中的建议可帮助您避免常见缺陷。</p><blockquote><ul><li>当连接数量巨大或尺寸巨大的字符串时，数组联合是 IE7 和它的早期版本上唯一具有合理性能的方法</li><li>如果你不关心 IE7 和它的早期版本， 数组联合是连接字符串最慢的方法之一。使用简单的+和+=取而代之，可避免（产生）不必要的中间字符串。</li><li>回溯既是正则表达式匹配功能基本的组成部分，又是正则表达式影响效率的常见原因。</li><li>回溯失控发生在正则表达式本应很快发现匹配的地方，因为某些特殊的匹配字符串动作，导致运行缓慢甚至浏览器崩溃。避免此问题的技术包括：使相邻字元互斥，避免嵌套量词对一个字符串的相同部分多次匹配，通过重复利用前瞻操作的原子特性去除不必要的回溯。</li><li>提高正则表达式效率的各种技术手段，帮助正则表达式更快地找到匹配，以及在非匹配位置上花费更少时间（见《更多提高正则表达式效率的方法》）。</li><li>正则表达式并不总是完成工作的最佳工具，尤其当你只是搜索一个文本字符串时。</li><li>虽然有很多方法来修整一个字符串，使用两个简单的正则表达式（一个用于去除头部空格，另一个用于去除尾部空格）提供了一个简洁、跨浏览器的方法，适用于不同内容和长度的字符串。从字符串末尾开始循环查找第一个非空格字符，或者在一个混合应用中将此技术与正则表达式结合起来，提供了一个很好的替代方案，它很少受到字符串整体长度的影响。</li></ul></blockquote></div></div><nav id="article-nav"> <a href="/2015/08/02/高性能JavaScript4/" id="article-nav-newer" class="article-nav-link-wrap"><strong class="article-nav-caption">&lt;</strong><div class="article-nav-title"> JavaScript 算法和流程控制的优化</div></a><a href="/2015/08/04/高性能JavaScript6/" id="article-nav-older" class="article-nav-link-wrap"><div class="article-nav-title">JavaScript 响应接口的优化</div> <strong class="article-nav-caption">&gt;</strong></a></nav></article><div class="ds-share share" data-thread-key="高性能JavaScript5" data-title="JavaScript 字符串和正则表达式" data-url="http://blog.smackdown.gebilaowu.cn/2015/08/03/高性能JavaScript5/" data-images="http://7xkj1z.com1.z0.glb.clouddn.com/head-1.gif" data-content="JavaScript 字符串和正则表达式"><div class="ds-share-inline"><ul class="ds-share-icons-16"><li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li><li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li><li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li><li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li><li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li></ul><div class="ds-share-icons-more"></div></div></div><div class="duoshuo"><div class="ds-thread" data-thread-key="高性能JavaScript5" data-title="JavaScript 字符串和正则表达式" data-url="http://blog.smackdown.gebilaowu.cn/2015/08/03/高性能JavaScript5/"></div><script type="text/javascript">var duoshuoQuery={short_name:"winnerweb"};!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"==document.location.protocol?"https:":"http:")+"//static.duoshuo.com/embed.js",t.charset="UTF-8",(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(t)}()</script></div></div><footer id="footer"><div class="outer"><div id="footer-info"><div class="footer-left"> &copy; 2017 Smackgg</div><div class="footer-right"> <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a></div></div></div></footer></div><link rel="stylesheet" href="/fancybox/jquery.fancybox.css"><script>var yiliaConfig={fancybox:!0,mathjax:!0,animate:!0,isHome:!1,isPost:!0,isArchive:!1,isTag:!1,isCategory:!1,open_in_new:!1}</script><script src="/js/main.js"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script><script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script></div></body></html>
