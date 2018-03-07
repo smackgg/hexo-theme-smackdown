@@ -156,3 +156,6 @@ swift_search:
 Update: 2016-10-31
 - 更新https加载js问题
 - 更新readme
+
+Update: 2016-12-14
+- 修复分享在https下的bug,用多说分享代替jiathis。
