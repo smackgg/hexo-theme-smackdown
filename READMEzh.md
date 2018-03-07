@@ -14,11 +14,11 @@ ___
 
 很早就搭出的博客，一直没有时间折腾，大三的时间实在是太紧了。这段时间终于腾出点时间，能让我好好的收拾一下自己的博客。将主题优化了一下，本主题基于 [Yilia](https://github.com/litten/hexo-theme-yilia) 主题更改。主题地址[smackdown](https://github.com/smackgg/hexo-theme-smackdown)。
 
-**可以点击进入[我的个人博客](https://smackgg.github.io/blog)查看效果**
+**可以点击进入[我的个人博客](http://oldblog.smackgg.cn/)查看效果**
 
 **体验手机版的可以扫下面的二维码。**
 
-![二维码](http://7xkj1z.com1.z0.glb.clouddn.com/blog%E4%BA%8C%E7%BB%B4%E7%A0%81.png "GitHub Mark")
+![二维码](http://7xkj1z.com1.z0.glb.clouddn.com/1520411791.png "GitHub Mark")
 
 ---
 

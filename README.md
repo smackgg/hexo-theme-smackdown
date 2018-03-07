@@ -14,11 +14,11 @@ ___
 
 This theme changed based on [Yilia](https://github.com/litten/hexo-theme-yilia) .This theme site is [smackdown](https://github.com/smackgg/hexo-theme-smackdown).
 
-**You can go to [my blog](https://smackgg.github.io/blog) to see**
+**You can go to [my blog](http://oldblog.smackgg.cn/) to see**
 
 **You also can scan QR code on your mobile devices**
 
-![QR code](http://7xkj1z.com1.z0.glb.clouddn.com/blog%E4%BA%8C%E7%BB%B4%E7%A0%81.png "GitHub Mark")
+![QR code](http://7xkj1z.com1.z0.glb.clouddn.com/1520411791.png "GitHub Mark")
 
 ---
 
